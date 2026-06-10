@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Live App](https://shields.io)](https://streamlit.app)
+[![Live App](https://shields.io)](https://vehicle-damage-detector-ai.streamlit.app/)
 
 ![Python Version](https://shields.io)
 ![Streamlit Framework](https://shields.io)
@@ -57,7 +57,7 @@ The application uses in-memory stream processing for image handling, ensuring fa
 ## 🚀 Cloud Execution
 
 To view and interact with the production deployment directly without installing any local code dependencies, navigate to our public instances hosting cluster:
-👉 **[Launch Live Web Application](https://streamlit.app)**
+👉 **[Launch Live Web Application](https://vehicle-damage-detector-ai.streamlit.app/)**
 
 ---
 
