@@ -4,11 +4,7 @@
 
 [![Live App](https://shields.io)](https://vehicle-damage-detector-ai.streamlit.app/)
 
-![Python Version](https://shields.io)
-![Streamlit Framework](https://shields.io)
-![PyTorch Framework](https://shields.io)
-![MIT License](https://shields.io)
-
+ 
 An interactive web application built with Streamlit and PyTorch that utilizes a fine-tuned ResNet50 deep learning model to classify vehicle damage from uploaded images.
 
 The application uses in-memory stream processing for image handling, ensuring fast predictions and multi-user concurrency without saving temporary files to the disk.
