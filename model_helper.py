@@ -33,7 +33,7 @@ class CarClassifierResNet(nn.Module):
 def load_my_model():
     model = CarClassifierResNet()
 
-    # 🔧 FIX: Generate a robust absolute path for the Streamlit Linux container
+    # Generate a robust absolute path for the Streamlit Linux container
     base_dir = Path(__file__).parent.resolve()
     model_path = base_dir / "model" / "saved_model.pth"
 
@@ -61,5 +61,15 @@ def predict(uploaded_file):
 
     with torch.no_grad():
         output = trained_model(image_tensor)
-        _, predicted_class = torch.max(output, 1)
-        return class_names[predicted_class.item()]
+
+        # 1. Convert raw output scores (logits) into a real probability distribution (0.0 to 1.0)
+        probabilities = torch.nn.functional.softmax(output, dim=1)
+
+        # 2. Extract the index with the highest probability value
+        predicted_class_idx = torch.argmax(probabilities, dim=1).item()
+
+        # 3. Pull out the exact confidence decimal for that chosen class
+        confidence_score = probabilities[0][predicted_class_idx].item()
+
+        # 4. Return both values as a tuple to the frontend app.py
+        return class_names[predicted_class_idx], confidence_score

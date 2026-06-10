@@ -33,9 +33,10 @@ if uploaded_file:
 
         with st.spinner("Executing ResNet50 Inference Pipeline..."):
             try:
-                prediction = predict(uploaded_file)
+                # 🔧 SYNC FIX: Unpack both the class string and the mathematical confidence decimal float
+                prediction, real_confidence = predict(uploaded_file)
 
-                # Assign dynamic colors and emojis based on the predicted class
+                # Assign dynamic colors and emojis based on the predicted class string
                 if "Normal" in prediction:
                     bg_color = "#d4edda"  # Soft Green
                     text_color = "#155724"
@@ -73,10 +74,10 @@ if uploaded_file:
                     unsafe_allow_html=True
                 )
 
-                # Add a simulated metrics progress bar to delight recruiters
-                st.write("**Model Confidence Profile**")
-                st.progress(0.94)  # Highlights your 94% validation score dynamically
-                st.caption("Statistical confidence rating verified against validation metrics baseline.")
+                # 🔧 SYNC FIX: Feed the dynamic Softmax probability value directly into the progress bar UI
+                st.write(f"**Model Confidence Profile: {real_confidence * 100:.1f}%**")
+                st.progress(real_confidence)  # Progress expects a float between 0.0 and 1.0
+                st.caption("Live statistical confidence rating generated via PyTorch Softmax distribution layer.")
 
             except Exception as e:
                 st.error(f"System Inference Error: {e}")
