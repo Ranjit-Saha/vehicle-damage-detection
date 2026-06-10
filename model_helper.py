@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import torch
 from torch import nn
 from torchvision import models, transforms
@@ -31,8 +32,14 @@ class CarClassifierResNet(nn.Module):
 @st.cache_resource
 def load_my_model():
     model = CarClassifierResNet()
-    # Using os.path.join prevents Windows single-backslash escape string syntax errors
-    model_path = os.path.join("model", "saved_model.pth")
+
+    # 🔧 FIX: Generate a robust absolute path for the Streamlit Linux container
+    base_dir = Path(__file__).parent.resolve()
+    model_path = base_dir / "model" / "saved_model.pth"
+
+    if not model_path.exists():
+        raise FileNotFoundError(f"Weights file not found at expected location: {model_path}")
+
     model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
     model.eval()
     return model

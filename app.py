@@ -14,9 +14,13 @@ if uploaded_file:
     # 2. Display the image cleanly using the modern parameter layout
     st.image(image, caption='Uploaded file', use_container_width=True)
 
+    # 🔧 FIX: Reset the file pointer so model_helper.py can read the bytes from the start!
+    uploaded_file.seek(0)
+
     # 3. Pass the file object directly to the prediction pipeline
     with st.spinner("Analyzing image..."):
-        prediction = predict(uploaded_file)
-
-    st.info(f"Predicted Class: {prediction}")
-
+        try:
+            prediction = predict(uploaded_file)
+            st.info(f"Predicted Class: {prediction}")
+        except Exception as e:
+            st.error(f"Prediction Error: {e}")
